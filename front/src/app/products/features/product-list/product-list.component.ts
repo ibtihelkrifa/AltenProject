@@ -36,6 +36,7 @@ export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
 
   public readonly products = this.productsService.products;
+  public readonly localStorageProducts = this.productsService.localStorageProducts;
 
   public isDialogVisible = false;
   public isCreation = false;
@@ -80,5 +81,13 @@ export class ProductListComponent implements OnInit {
 
   public onAddToCart(product : Product) {
     this.productsService.addToCart(product.id).subscribe();
+  }
+
+  public isProductInCart(product: Product) {
+    return this.localStorageProducts().find((p) => p.id === product.id);
+  }
+
+  public removeProductFromCart(product: Product) {
+    return this.productsService.removeFromCart(product.id).subscribe();
   }
 }

@@ -14,7 +14,8 @@ export class ProductsService {
 
   public readonly products = this._products.asReadonly();
 
-  public localStorageProducts = signal<Product[]>([]);
+  public _localStorageProducts = signal<Product[]>([]);
+  public localStorageProducts = this._localStorageProducts.asReadonly();
 
   public get(): Observable<Product[]> {
     return this.http.get<Product[]>(this.path).pipe(
@@ -70,11 +71,22 @@ export class ProductsService {
           (product) => product.id === productId
         );
         if (productToAdd) {
-          this.localStorageProducts.update((oldProducts) => [
+          this._localStorageProducts.update((oldProducts) => [
             ...oldProducts,
             productToAdd,
           ]);
         }
+      })
+    );
+  }
+
+  removeFromCart(productId: number) {
+    return this.http.put<boolean>(`${this.path}`, productId).pipe(
+      catchError(() => {
+        return of(true);
+      }),
+      tap(() => {
+        this._localStorageProducts.update((products) => products.filter((product) => product.id !== productId));
       })
     );
   }

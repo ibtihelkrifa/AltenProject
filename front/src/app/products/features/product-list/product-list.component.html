@@ -17,6 +17,11 @@
                     <button pButton type="button" label="Ajouter au panier" icon="pi pi-shopping-cart"
                         class="p-button-success" (click)="onAddToCart(product)">
                     </button>
+                    @if(isProductInCart(product)) {
+                    <button pButton type="button" label="supprimer produit" icon="pi pi-shopping-cart"
+                        class="p-button-danger p-button-sm" (click)="removeProductFromCart(product)">
+                    </button>
+                    }
                 </div>
             </ng-template>
         </p-card>
