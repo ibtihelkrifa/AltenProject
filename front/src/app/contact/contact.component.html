@@ -1,0 +1,53 @@
+<div class="contact-page">
+  <p-card header="📩 Contactez-nous !" class="contact-card">
+    <form class="flex flex-column gap-4" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <!-- Email -->
+      <div class="flex flex-column gap-2">
+        <label for="email" class="font-semibold text-900">Adresse email</label>
+        <input
+          pInputText
+          id="email"
+          type="email"
+          placeholder="exemple@mail.com"
+          formControlName="email"
+        />
+        <small class="text-color-secondary">
+          Veuillez saisir votre adresse mail.
+        </small>
+      </div>
+
+      <!-- Message -->
+      <div class="flex flex-column gap-2">
+        <label for="message" class="font-semibold text-900">Message</label>
+        <textarea
+          pInputTextarea
+          id="message"
+          rows="5"
+          placeholder="Écrivez votre message ici..."
+          style="resize: none"
+          formControlName="message"
+        ></textarea>
+      </div>
+
+      <!-- Bouton -->
+      <div class="flex justify-content-end mt-3">
+        <button
+          pButton
+          type="submit"
+          label="Envoyer"
+          icon="pi pi-send"
+          class="p-button-rounded p-button-primary"
+        >Envoyer</button>
+      </div>
+      @if(isEmailInvalid) {
+        <p>Veuillez saisir une adresse email valide</p>
+      }
+      @if(isMessageInvalid) {
+        <p>Le message est trop long (300 caractéres maximum)</p>
+      }
+      @if(showSuccess()) {
+        <p>Votre message a été envoyé avec succés!</p>
+      }
+    </form>
+  </p-card>
+</div>
