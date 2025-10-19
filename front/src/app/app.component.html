@@ -6,12 +6,35 @@
         {{ title }}
     </div>
     <div class="p-toolbar-group-end">
-        <span class="p-overlay-badge">
+        <span class="p-overlay-badge" (click)="cartVisible=true">
             <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
             <span class="p-badge">{{ numberOfProductsAddedToCart }}</span>
         </span>
     </div>
 </p-toolbar>
+<p-sidebar [(visible)]="cartVisible" position="right">
+    <h3>🛒 Mon Panier</h3>
+    @if(isCartEmpty()) {
+    <p>Votres panier est vide</p>
+    } @else {
+    @for (product of localStorageProducts(); track product.id) {
+    <div class="flex align-items-center gap-3 border-bottom pb-2">
+        <!-- 🧾 Description d'abord -->
+        <div class="flex flex-column flex-grow-1">
+            <div class="font-medium text-900">{{ product.name }}</div>
+            <div class="text-sm text-secondary">{{ product.description }}</div>
+            <div class="font-semibold mt-1">{{ product.price | currency:'EUR' }}</div>
+        </div>
+
+        <img [src]="'/assets/' + product.image" [alt]="product.name"
+            class="w-4rem h-4rem border-round object-cover shadow-1" />
+
+        <button pButton icon="pi pi-times" class="p-button-rounded p-button-danger p-button-outlined ml-2"
+            style="width: 2.5rem; height: 2.5rem;" (click)="removeFromCart(product)"></button>
+    </div>
+    }
+    }
+</p-sidebar>
 <p-splitter [panelSizes]="[20, 80]" [style]="{ height: 'calc(100vh - 100px)' }">
     <ng-template pTemplate>
         <div class="w-full">
